@@ -31,7 +31,10 @@ PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
 DEBUG = True
 
 ALLOWED_HOSTS = ["localhost","muhammad-hadziqul-footballnews.pbp.cs.ui.ac.id", "127.0.0.1"]
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://muhammad-hadziqul-footballnews.pbp.cs.ui.ac.id"
+]
+...
 
 # Application definition
 
@@ -58,18 +61,18 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'football_news.urls'
 
 TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
+  {
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+    'DIRS': [BASE_DIR /'templates'],
+    'APP_DIRS': True,
+    'OPTIONS': {
+        'context_processors': [
+            'django.template.context_processors.request',
+            'django.contrib.auth.context_processors.auth',
+            'django.contrib.messages.context_processors.messages',
+        ],
     },
+  },
 ]
 
 WSGI_APPLICATION = 'football_news.wsgi.application'
@@ -102,7 +105,6 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
