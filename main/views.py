@@ -61,6 +61,7 @@ def logout_user(request):
     response.delete_cookie('last_login')
     return response
 
+@login_required(login_url='/login')
 def create_news(request):
     form = NewsForm(request.POST or None)
 
@@ -87,6 +88,25 @@ def show_news(request, id):
 
     return render(request, "news_detail.html", context)
 
+@login_required(login_url='/login')
+def edit_news(request, id):
+    news = get_object_or_404(News, pk=id)
+    form = NewsForm(request.POST or None, instance=news)
+    if form.is_valid() and request.method == 'POST':
+        form.save()
+        return redirect('main:show_main')
+
+    context = {
+        'form': form
+    }
+
+    return render(request, "edit_news.html", context)
+@login_required(login_url='/login')
+def delete_news(request, id):
+    news = get_object_or_404(News, pk=id)
+    news.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))
+
 def show_xml(request):
     news_list = News.objects.all()
     xml_data = serializers.serialize("xml", news_list)
@@ -106,3 +126,4 @@ def show_json_by_id(request, news_id):
     news_item = get_object_or_404(News, pk=news_id)
     json_data = serializers.serialize("json", [news_item])
     return HttpResponse(json_data, content_type="application/json")
+
