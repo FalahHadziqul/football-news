@@ -30,9 +30,17 @@ SECRET_KEY = 'django-insecure-qwc+%uwvos9oqukml%p5sm=ewmi879j*whfr=nt)h3rranxe7z
 PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost","muhammad-hadziqul-footballnews.pbp.cs.ui.ac.id", "127.0.0.1"]
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
+
+ALLOWED_HOSTS = ["localhost","muhammad-hadziqul-footballnews.pbp.cs.ui.ac.id", "127.0.0.1","10.0.2.2"]
 CSRF_TRUSTED_ORIGINS = [
-    "https://muhammad-hadziqul-footballnews.pbp.cs.ui.ac.id"
+    "https://muhammad-hadziqul-footballnews.pbp.cs.ui.ac.id",
+    "http://localhost:60484"
 ]
 ...
 
@@ -45,11 +53,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main'
+    'main',
+    'authentication',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

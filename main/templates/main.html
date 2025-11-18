@@ -63,6 +63,10 @@
   </div>
 </div>
 
+{% if messages %}
+  showToast('Success', {{messages}})
+{% endif %}
+
 <script>
 // Configuration
 const NEWS_API_ENDPOINT = "{% url 'main:show_json' %}";

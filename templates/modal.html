@@ -84,24 +84,27 @@
     }
 
     async function addNewsEntry() {
-      await fetch("{% url 'main:add_news_entry_ajax' %}", {
-        method: "POST",
-        body: new FormData(document.querySelector('#newsForm')),
-      })
+      try {
+        const response = await fetch("{% url 'main:add_news_entry_ajax' %}", {
+          method: "POST",
+          body: new FormData(document.querySelector('#newsForm')),
+        });
+        if (response.ok) {
+          document.getElementById("newsForm").reset();
+          hideModal();
+          showToast('News added successfully!', '', 'success');
+          document.dispatchEvent(new CustomEvent('newsAdded'));
+        } else {
+          showToast('Failed to add news!', '', 'error');
+        }
+      } catch (error) {
+        showToast('Network error!', '', 'error');
+      }
+      return false;
+    }
 
-    document.getElementById("newsForm").reset();
-    hideModal();
-      
-    // Show toast notification
-    showToast('News added successfully!', '', 'success');
-
-    // Dispatch custom event to notify main.html about new data
-    document.dispatchEvent(new CustomEvent('newsAdded'));
-    
     document.getElementById("newsForm").addEventListener("submit", function(e) {
-        e.preventDefault();
-        addNewsEntry();
+      e.preventDefault();
+      addNewsEntry();
     })
-    return false;
-  }
 </script>
